@@ -118,18 +118,23 @@ function barPlot(data) {
 function bubblePlot(data) {
   //data = myData.samples from init function
 
- // convert sample_value into float
- let int_data = data.sample_values.map(x => { 
-  return parseFloat(x, 10)*0.8});
+ // convert sample_value into float 
+ let flt_data = data.sample_values.map(x => { 
+  return parseFloat(x, 10)});
+
+ // scaled sample_values for marker size 
+ let scaled_flt_data = flt_data.map(x => { 
+  return x*0.8
+ });
 
   var trace1 = {
     x: data.otu_ids,
-    y: int_data,
+    y: flt_data,
     text: data.otu_labels,
     mode: 'markers',
     marker: {
       color: data.otu_ids,
-      size: int_data,
+      size: scaled_flt_data,
       colorscale: 'Jet'
     }
   };
