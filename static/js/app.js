@@ -6,7 +6,10 @@ function init() {
   d3.json(url)
   .then((data) => {
     console.log("Samples: ",data.samples);
+
+    // set data to global variable
     myData = data
+
     ////////////////////////////////////////////////
     //// initialize and populate drop down list ////
     let dropdownMenu = d3.select("#selDataset");
@@ -46,19 +49,19 @@ function updateData() {
   
   // finds index number in data.samples corresponding to id number selected in drowdown menu
   var index = myData.samples.findIndex(name => name.id == id_num);
-  console.log('Index number of selected dataset: ',index)
+  console.log('Index number of selected dataset: ',index);
 
   // chooses sample dataset based on index number found in previous line
   let selected_sample = myData.samples[index];
-  console.log(selected_sample)
+  console.log(selected_sample);
 
   // clear previous demographic data
   d3.select("#sample-metadata").html("");
 
 
   // update demographic info
-  demoInfo(myData.metadata[index])
-  console.log("show selected metadata: ", myData.metadata[index])
+  demoInfo(myData.metadata[index]);
+  console.log("show selected metadata: ", myData.metadata[index]);
 
   ////////// update bar plot //////////////////////////////////////////////////
 
@@ -66,19 +69,19 @@ function updateData() {
   d3.select("#bar").html("");  
 
   // call barPlot to create plot with selected data
-  barPlot(selected_sample)
+  barPlot(selected_sample);
 
   ////////// update bubble plot ///////////////////////////////////////////////
 
   // remove previous plot
-  d3.select('#bubble').html("")
+  d3.select('#bubble').html("");
 
   // call barPlot to create plot with selected data
   bubblePlot(selected_sample)
 };
 
 function barPlot(data) {
-  //data = data.samples
+  //data = myData.samples from init function
 
   // empty list for plot tick labels
   let tick_labels = [];
@@ -108,18 +111,20 @@ function barPlot(data) {
     text: data.otu_labels.slice(0,10).reverse(),
     orientation: 'h'
   }];
-  console.log('otu labels: ',data.otu_ids)
+  console.log('otu labels: ',data.otu_ids);
   Plotly.newPlot('bar', trace);
 };
 
 function bubblePlot(data) {
-  //data = data.samples
+  //data = myData.samples from init function
+
+ // convert sample_value into float
  let int_data = data.sample_values.map(x => { 
-  return parseInt(x, 10)});
+  return parseFloat(x, 10)*0.8});
 
   var trace1 = {
     x: data.otu_ids,
-    y: data.sample_values,
+    y: int_data,
     text: data.otu_labels,
     mode: 'markers',
     marker: {
@@ -144,7 +149,7 @@ function bubblePlot(data) {
   };
 
   Plotly.newPlot('bubble', plot_data, layout);
-  console.log('int_data: ', int_data)
+  console.log('int_data: ', int_data);
   
 };
 
@@ -152,7 +157,7 @@ function demoInfo(data) {
   // grab HTML element to modify
   let meta_list = d3.select("#sample-metadata");
 
-  // loop through given metadata and extract key value pairs
+  // loop through selected metadata and extract key value pairs
   Object.entries(data).forEach(([key,value]) => {
     
     // append key value pairs to list items below demographics box
