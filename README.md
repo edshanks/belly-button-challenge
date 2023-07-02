@@ -6,4 +6,29 @@ Some samples have less than 10 OTUs and will therefore have less than 10 OTUs di
 
 The raw dataset can be found in 'samples.json'. The javascript script can be found in the 'JS' folder, which is located in the 'static' folder found in the main repository.
 
+While writing the script for this project, I asked my instructor, Tom, many questions. He helped me and gave suggestions me regarding the overall structure of my script. For example, he encouraged me to declare a global variable to store the raw data and suggested that I use an update function. More specifically, he helped me write this line of code because I was having trouble finding the proper syntax:
 
+    // populated dropdown list
+    for (i=0; i<data.names.length; i++) {
+      dropdownMenu.append('option').text(data.names[i]).attr('value', data.names[i]);
+      //console.log("added option data names: ", data.names[i])
+    };
+
+
+After talking to Tom, I still got stuck a couple of times. I had a lot of difficulty populating the Demographic Data div in the demoInfo function. I referenced a project on github which was very similar to this project. I used the following line of code:
+
+    // loop through selected metadata and extract key value pairs
+  Object.entries(data).forEach(([key,value]) => {
+    
+    // append key value pairs to list items below demographics box
+    meta_list.append("li").text(`${key}: ${value}`)
+
+  });
+
+I also referenced the following line of code from the same project in my updateData function when I could not figure out how to clear the HTML for the Demographic Info div:
+
+  d3.select("#sample-metadata").html("");
+
+Here is the link to this github project:
+
+https://github.com/JeremyTallant/belly-button-challenge/blob/main/static/js/app.js
